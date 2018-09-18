@@ -38,7 +38,7 @@ public class StepMeterRegistryTests {
 		}
 	};
 
-	private final MeterRegistry registry = new StepMeterRegistry(config, Clock.SYSTEM) {
+	private final MeterRegistry registry = new StepMeterRegistry(this.config, Clock.SYSTEM) {
 		@Override
 		protected void publish() {
 		}
