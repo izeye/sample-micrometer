@@ -13,6 +13,9 @@ repositories {
 
 dependencies {
     compile("io.micrometer:micrometer-registry-prometheus:latest.release")
+
+    testCompile("junit:junit:latest.release")
+    testCompile("org.assertj:assertj-core:latest.release")
 }
 
 wrapper {
