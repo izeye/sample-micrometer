@@ -17,6 +17,10 @@ import io.micrometer.prometheus.PrometheusMeterRegistry;
 public class Application {
 
 	public static void main(String[] args) {
+		testPrometheusMeterRegistry();
+	}
+
+	private static void testPrometheusMeterRegistry() {
 		PrometheusMeterRegistry prometheusMeterRegistry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
 
 		System.out.println("### After creating PrometheusMeterRegistry, scrape():");
