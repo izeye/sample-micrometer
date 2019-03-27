@@ -13,7 +13,7 @@ repositories {
 
 dependencies {
 //    compile("io.micrometer:micrometer-registry-prometheus:latest.release")
-    compile("io.micrometer:micrometer-registry-prometheus:1.1.2")
+    compile("io.micrometer:micrometer-registry-prometheus:1.1.3")
 
     testCompile("junit:junit:latest.release")
     testCompile("org.assertj:assertj-core:latest.release")
