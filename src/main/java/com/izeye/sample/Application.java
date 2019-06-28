@@ -1,13 +1,12 @@
 package com.izeye.sample;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
-import com.sun.net.httpserver.HttpServer;
+import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.Counter;
-import io.micrometer.prometheus.PrometheusConfig;
-import io.micrometer.prometheus.PrometheusMeterRegistry;
+import io.micrometer.influx.InfluxConfig;
+import io.micrometer.influx.InfluxMeterRegistry;
 
 /**
  * Application.
@@ -17,36 +16,48 @@ import io.micrometer.prometheus.PrometheusMeterRegistry;
 public class Application {
 
 	public static void main(String[] args) {
-		testPrometheusMeterRegistry();
+		testInfluxMeterRegistry();
 	}
 
-	private static void testPrometheusMeterRegistry() {
-		PrometheusMeterRegistry prometheusMeterRegistry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
+	private static void testInfluxMeterRegistry() {
+		long startTimeMillis = System.currentTimeMillis();
 
-		System.out.println("### After creating PrometheusMeterRegistry, scrape():");
-		System.out.println(prometheusMeterRegistry.scrape());
+		InfluxConfig influxConfig = new InfluxConfig() {
 
-		Counter counter = prometheusMeterRegistry.counter("my.counter");
-		System.out.println("### After creating a counter, scrape():");
-		System.out.println(prometheusMeterRegistry.scrape());
+			@Override
+			public String get(String key) {
+				return null;
+			}
 
+			@Override
+			public Duration step() {
+				return Duration.ofSeconds(10);
+			}
+
+		};
+		InfluxMeterRegistry influxMeterRegistry = new InfluxMeterRegistry(influxConfig,
+				Clock.SYSTEM);
+
+		Counter counter = influxMeterRegistry.counter("my.counter");
 		counter.increment();
-		System.out.println("### After incrementing the counter, scrape():");
-		System.out.println(prometheusMeterRegistry.scrape());
+		System.out.println(counter.count());
 
+		sleep(10);
+		System.out.println(counter.count());
+
+		sleep(10);
+		System.out.println(counter.count());
+
+		long elapsedTimeMillis = System.currentTimeMillis() - startTimeMillis;
+		System.out.println("Elapsed time (ms): " + elapsedTimeMillis);
+	}
+
+	private static void sleep(int seconds) {
 		try {
-			HttpServer httpServer = HttpServer.create(new InetSocketAddress(8080), 0);
-			httpServer.createContext("/prometheus", httpExchange -> {
-				String response = prometheusMeterRegistry.scrape();
-				httpExchange.sendResponseHeaders(200, response.getBytes().length);
-				try (OutputStream os = httpExchange.getResponseBody()) {
-					os.write(response.getBytes());
-				}
-			});
-			new Thread(httpServer::start).start();
-			System.out.println("### Listening on http://localhost:8080/prometheus");
-		} catch (IOException ex) {
-			throw new RuntimeException(ex);
+			TimeUnit.SECONDS.sleep(seconds);
+		}
+		catch (InterruptedException ex) {
+			Thread.currentThread().interrupt();
 		}
 	}
 
