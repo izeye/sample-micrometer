@@ -34,6 +34,11 @@ public class Application {
 				return Duration.ofSeconds(10);
 			}
 
+			@Override
+			public String uri() {
+				return "http://www.google.com:81";
+			}
+
 		};
 		InfluxMeterRegistry influxMeterRegistry = new InfluxMeterRegistry(influxConfig,
 				Clock.SYSTEM);
