@@ -13,9 +13,12 @@ repositories {
 
 dependencies {
 	compile("io.micrometer:micrometer-registry-prometheus:latest.release")
+	compile("com.squareup.okhttp3:okhttp:latest.release")
 
 	testCompile("org.junit.jupiter:junit-jupiter:latest.release")
 	testCompile("org.assertj:assertj-core:latest.release")
+	testCompile("com.github.tomakehurst:wiremock:latest.release")
+	testCompile("ru.lanwen.wiremock:wiremock-junit5:latest.release")
 }
 
 test {
