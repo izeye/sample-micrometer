@@ -1,21 +1,16 @@
 apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
 
 sourceCompatibility = 1.8
 
 repositories {
-	jcenter()
-	maven { url "http://repo.spring.io/libs-release" }
-	maven { url "http://repo.spring.io/libs-milestone" }
-	maven { url "http://repo.spring.io/snapshot" }
+	mavenCentral()
 }
 
 dependencies {
-	compile("io.micrometer:micrometer-registry-prometheus:latest.release")
+	implementation("io.micrometer:micrometer-registry-prometheus:latest.release")
 
-	testCompile("org.junit.jupiter:junit-jupiter:latest.release")
-	testCompile("org.assertj:assertj-core:latest.release")
+	testImplementation("org.junit.jupiter:junit-jupiter:latest.release")
+	testImplementation("org.assertj:assertj-core:latest.release")
 }
 
 test {
