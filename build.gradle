@@ -11,6 +11,8 @@ dependencies {
 
 	testImplementation("org.junit.jupiter:junit-jupiter:latest.release")
 	testImplementation("org.assertj:assertj-core:latest.release")
+
+	testImplementation("com.google.guava:guava:latest.release")
 }
 
 test {
